@@ -8,12 +8,12 @@ namespace FogController
     public class FogController : LoadingExtensionBase, IUserMod
     {
         public string Name => "Fog Controller";
-        public string Description => "lorem ipsum";
+        public string Description => "adjust the fog";
 
         private static readonly string[] InscolLabels =
         {
             "Vanilla",
-            "Auto match to sun color",
+            "match to sun color",
             "Custom",
         };
 
@@ -393,6 +393,40 @@ namespace FogController
 
             });
 
+            UIHelperBase groupReset = helper.AddGroup("Reset");
+            groupReset.AddButton("Reset to Default", () => 
+            {
+                FCSettings.colordecay = 0.2f;
+                FCSettings.fogdensity = 0.00223f;
+                FCSettings.noisecontribution = 1f;
+                FCSettings.windspeed = 0.001f;
+                FCSettings.fogheight = 1000;
+                FCSettings.horizonheight = 800;
+                FCSettings.fogstart = 194;
+
+                FCSettings.classicfog = false;
+                FCSettings.daynightfog = true;
+                FCSettings.daynightedge = true;
+                FCSettings.classicedge = true;
+                FCSettings.volumefog = true;
+                FCSettings.volcustom = true;
+
+                FCSettings.inscatteringcolor = 0;
+
+                FCSettings.ins_r = 0.5647059f;
+                FCSettings.ins_g = 0.9254902f;
+                FCSettings.ins_b = 1f;
+
+                FCSettings.insEx = 1f;
+                FCSettings.insTs = 1.72f;
+
+                FCSettings.vol_r = 0.6509804f;
+                FCSettings.vol_g = 0.8862745f;
+                FCSettings.vol_b = 1f;
+
+                FCSettings.SaveSettings();
+                FCSettings.LoadSettings();
+            });
         }
         public override void OnLevelLoaded(LoadMode mode)
         {    

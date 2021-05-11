@@ -129,7 +129,7 @@ namespace FogController
                     XmlSerializer xmlSerializer = new XmlSerializer(typeof(FCSettingsFile));
                     if (!(xmlSerializer.Deserialize(reader) is FCSettingsFile spdSettingsFile))
                     {
-                        Debug.Log("Shadow Distance Patch: couldn't deserialize settings file");
+                        Debug.Log("Fog Controller: couldn't deserialize settings file");
                     }
                 }
             }
