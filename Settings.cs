@@ -108,7 +108,7 @@ namespace FogController
         internal static float ins_g = 0.9254902f;
         internal static float ins_b = 1f;
 
-        internal static float insEx = 1f;
+        internal static float insEx = -1.11457f;
         internal static float insTs = 1.72f;
 
         internal static float vol_r = 0.6509804f;

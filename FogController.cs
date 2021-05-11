@@ -394,7 +394,7 @@ namespace FogController
             });
 
             UIHelperBase groupReset = helper.AddGroup("Reset");
-            groupReset.AddButton("Reset to Default", () => 
+            groupReset.AddButton("Reset to Default", () =>
             {
                 FCSettings.colordecay = 0.2f;
                 FCSettings.fogdensity = 0.00223f;
@@ -417,7 +417,7 @@ namespace FogController
                 FCSettings.ins_g = 0.9254902f;
                 FCSettings.ins_b = 1f;
 
-                FCSettings.insEx = 1f;
+                FCSettings.insEx = -1.11457f;
                 FCSettings.insTs = 1.72f;
 
                 FCSettings.vol_r = 0.6509804f;
@@ -425,6 +425,56 @@ namespace FogController
                 FCSettings.vol_b = 1f;
 
                 FCSettings.SaveSettings();
+
+                var fc = UnityEngine.Object.FindObjectOfType<FogProperties>();
+                fc.m_ColorDecay = FCSettings.colordecay;
+                fc.m_FogDensity = FCSettings.fogdensity;
+                fc.m_NoiseContribution = FCSettings.noisecontribution;
+                fc.m_edgeFog = FCSettings.daynightedge;
+                fc.m_FogHeight = FCSettings.fogheight;
+                fc.m_HorizonHeight = FCSettings.horizonheight;
+                fc.m_FogStart = FCSettings.fogstart;
+                fc.m_WindSpeed = FCSettings.windspeed;
+
+                var fc2 = UnityEngine.Object.FindObjectOfType<FogEffect>();
+                fc2.enabled = FCSettings.classicfog;
+                fc2.m_edgeFog = FCSettings.classicedge;
+
+                var fc3 = UnityEngine.Object.FindObjectOfType<DayNightFogEffect>();
+                fc3.enabled = FCSettings.daynightfog;
+
+                var fc4 = UnityEngine.Object.FindObjectOfType<RenderProperties>();
+                fc4.m_useVolumeFog = FCSettings.volumefog;
+                fc4.m_inscatteringExponent = (float)-Math.Pow(FCSettings.insEx, 5);
+                fc4.m_inscatteringIntensity = FCSettings.insTs;
+
+                if (FCSettings.inscatteringcolor == 2)
+                {
+                    fc4.m_inscatteringColor = new Color(FCSettings.ins_r, FCSettings.ins_g, FCSettings.ins_b, 1f);
+                }
+                else if (FCSettings.inscatteringcolor == 0)
+                {
+                    fc4.m_inscatteringColor = new Color(0.5647059f, 0.9254902f, 1f, 1f);
+                }
+
+                if (FCSettings.volcustom == false)
+                {
+                    fc4.m_volumeFogColor = new Color(0.6509804f, 0.8862745f, 1f, 1f);
+                }
+                else
+                {
+                    fc4.m_volumeFogColor = new Color(FCSettings.vol_r, FCSettings.vol_g, FCSettings.vol_b, 1f);
+                }
+
+                if (FCSettings.classicedge)
+                {
+                    fc4.m_volumeFogStart = 1711;
+                }
+                else
+                {
+                    fc4.m_volumeFogStart = 0;
+                }
+
                 FCSettings.LoadSettings();
             });
         }
