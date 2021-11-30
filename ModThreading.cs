@@ -5,17 +5,25 @@ namespace FogController
 {
     public class ModThreading : ThreadingExtensionBase
     {
+        private bool RPnull = true;
+        RenderProperties renderProperties = null;
         public void OnEnabled()
         {
             FCSettings.LoadSettings();
+            
         }
         public override void OnUpdate(float realTimeDelta, float simulationTimeDelta)
         {
-            var inscol = UnityEngine.Object.FindObjectOfType<RenderProperties>();
-
-            if (FCSettings.inscatteringcolor == 1)
+            
+            if (FogController.enabledInscol)
             {
-                inscol.m_inscatteringColor = DayNightProperties.instance.currentLightColor;
+                
+                if (RPnull)
+                {
+                    renderProperties = UnityEngine.Object.FindObjectOfType<RenderProperties>();
+                    RPnull = false;
+                }
+                renderProperties.m_inscatteringColor = DayNightProperties.instance.currentLightColor;
             }
                    
         }

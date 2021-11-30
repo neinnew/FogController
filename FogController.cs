@@ -10,6 +10,7 @@ namespace FogController
         public string Name => "Fog Controller";
         public string Description => "adjust the fog";
 
+        public static bool enabledInscol = false;
         private static readonly string[] InscolLabels =
         {
             "Vanilla",
@@ -253,20 +254,28 @@ namespace FogController
 
             group2.AddDropdown("Inscattering Color", InscolLabels, FCSettings.inscatteringcolor, sel =>
             {
-                FCSettings.inscatteringcolor = sel;
-                FCSettings.SaveSettings();
-
                 var inscol = UnityEngine.Object.FindObjectOfType<RenderProperties>();
 
-                if (FCSettings.inscatteringcolor == 2)
+                if (inscol != null)
                 {
-                    inscol.m_inscatteringColor = new Color(FCSettings.ins_r, FCSettings.ins_g, FCSettings.ins_b, 1f);
+                    switch (sel)
+                    {
+                        case 0:
+                            enabledInscol = false;
+                            inscol.m_inscatteringColor = new Color(0.5647059f, 0.9254902f, 1f, 1f);
+                            break;
+                        case 1:
+                            enabledInscol = true;
+                            break;
+                        case 2:
+                            enabledInscol = false;
+                            inscol.m_inscatteringColor = new Color(FCSettings.ins_r, FCSettings.ins_g, FCSettings.ins_b, 1f);
+                            break;
+                    }
                 }
-
-                else if (FCSettings.inscatteringcolor == 0)
-                {
-                    inscol.m_inscatteringColor = new Color(0.5647059f, 0.9254902f, 1f, 1f);
-                }
+                // Update and save settings.
+                FCSettings.inscatteringcolor = sel;
+                FCSettings.SaveSettings();
             });
 
             group2.AddSlider("R", 0, 1, 0.001f, FCSettings.ins_r, sel =>
@@ -446,36 +455,10 @@ namespace FogController
                 var fc4 = UnityEngine.Object.FindObjectOfType<RenderProperties>();
                 fc4.m_useVolumeFog = FCSettings.volumefog;
                 fc4.m_inscatteringExponent = (float)-Math.Pow(FCSettings.insEx, 5);
-                fc4.m_inscatteringIntensity = FCSettings.insTs;
-
-                if (FCSettings.inscatteringcolor == 2)
-                {
-                    fc4.m_inscatteringColor = new Color(FCSettings.ins_r, FCSettings.ins_g, FCSettings.ins_b, 1f);
-                }
-                else if (FCSettings.inscatteringcolor == 0)
-                {
-                    fc4.m_inscatteringColor = new Color(0.5647059f, 0.9254902f, 1f, 1f);
-                }
-
-                if (FCSettings.volcustom == false)
-                {
-                    fc4.m_volumeFogColor = new Color(0.6509804f, 0.8862745f, 1f, 1f);
-                }
-                else
-                {
-                    fc4.m_volumeFogColor = new Color(FCSettings.vol_r, FCSettings.vol_g, FCSettings.vol_b, 1f);
-                }
-
-                if (FCSettings.classicedge)
-                {
-                    fc4.m_volumeFogStart = 1711;
-                }
-                else
-                {
-                    fc4.m_volumeFogStart = 0;
-                }
-
+                fc4.m_inscatteringIntensity = FCSettings.insTs;   
+                fc4.m_inscatteringColor = new Color(0.5647059f, 0.9254902f, 1f, 1f);
                 FCSettings.LoadSettings();
+                // RESET SETTIG REIGION
             });
         }
         public override void OnLevelLoaded(LoadMode mode)
@@ -502,13 +485,19 @@ namespace FogController
             fc4.m_inscatteringExponent = (float)-Math.Pow(FCSettings.insEx, 5);
             fc4.m_inscatteringIntensity = FCSettings.insTs;
 
-            if (FCSettings.inscatteringcolor == 2)
+            switch (FCSettings.inscatteringcolor)
             {
-                fc4.m_inscatteringColor = new Color(FCSettings.ins_r, FCSettings.ins_g, FCSettings.ins_b, 1f);
-            }
-            else if (FCSettings.inscatteringcolor == 0)
-            {
-                fc4.m_inscatteringColor = new Color(0.5647059f, 0.9254902f, 1f, 1f);
+                case 0:
+                    enabledInscol = false;
+                    fc4.m_inscatteringColor = new Color(0.5647059f, 0.9254902f, 1f, 1f);
+                    break;
+                case 1:
+                    enabledInscol = true;
+                    break;
+                case 2:
+                    enabledInscol = false;
+                    fc4.m_inscatteringColor = new Color(FCSettings.ins_r, FCSettings.ins_g, FCSettings.ins_b, 1f);
+                    break;
             }
 
             if (FCSettings.volcustom == false)
