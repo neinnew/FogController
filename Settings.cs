@@ -50,6 +50,9 @@ namespace FogController
         [XmlElement("classicfog")]
         public bool classicfog { get => FCSettings.classicfog; set => FCSettings.classicfog = value; }
 
+        [XmlElement("disableatnight")]
+        public bool disableatnight { get => FCSettings.disableatnight; set => FCSettings.disableatnight = value; }
+
         [XmlElement("inscatteringcolor")]
         public int inscatteringcolor { get => FCSettings.inscatteringcolor; set => FCSettings.inscatteringcolor = value; }
 
@@ -96,6 +99,7 @@ namespace FogController
         internal static int fogstart = 194;
 
         internal static bool classicfog = false;
+        internal static bool disableatnight = false;
         internal static bool daynightfog = true;
         internal static bool daynightedge = true;
         internal static bool classicedge = true;
